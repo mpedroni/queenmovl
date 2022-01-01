@@ -8,10 +8,12 @@ module.exports = {
       sans: ['Roboto', "sans-serif"],
       title: ['Inter', "sans-serif"]
     },
-    colors: {
-      body: "#9CA3AF",
-      heading: "#E5E7EB",
-      highlight: "#0F766E"
+    extend: {
+      colors: {
+        body: "#9CA3AF",
+        heading: "#E5E7EB",
+        highlight: "#0F766E"
+      }
     }
   },
 }
