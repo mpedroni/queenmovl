@@ -15,10 +15,11 @@ export default function Home() {
 
       <button
         className="
-          flex align-middle gap-4 
-        bg-highlight rounded-md h-14 p-4 shadow-md 
+          flex align-middle justify-center gap-4
+          bg-highlight rounded-md h-14 p-4 shadow-md
           transition hover:brightness-90
           font-mono uppercase tracking-wider text-heading
+          w-full md:w-auto
         "
       >
         <Image src={GoogleIcon} alt="Google icon" />
