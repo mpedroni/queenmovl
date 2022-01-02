@@ -1,4 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document';
+import { Header } from '../components/Header';
 
 export default class MyDocument extends Document {
   render() {
@@ -8,12 +9,13 @@ export default class MyDocument extends Document {
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Roboto:wght@400;500;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Roboto+Mono:wght@500&family=Roboto:wght@400;500;700&display=swap"
             rel="stylesheet"
           />
         </Head>
 
         <body className="bg-slate-900">
+          <Header />
           <Main />
           <NextScript />
         </body>
