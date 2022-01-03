@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { GetStaticProps } from 'next';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FiCheck, FiX } from 'react-icons/fi';
 
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../contexts/AuthContext';
 
 import GoogleIcon from '../assets/icons/google.svg';
 
@@ -31,6 +30,8 @@ export default function Home() {
 
   function handleUserRegister() {
     register(username);
+
+    router.push('/dashboard');
   }
 
   if (!user)
@@ -106,19 +107,12 @@ export default function Home() {
             disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none
           "
           disabled={!username || !isUsernameAvailable}
-          onClick={handleUserRegister}
+          onClick={() => handleUserRegister()}
         >
           Começar
         </button>
       </main>
     );
 
-  router.push('/dashboard');
+  return null;
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {},
-    revalidate: 60 * 60 * 24, // 1 day
-  };
-};
