@@ -1,11 +1,17 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
+type User = {
+  username: string;
+  name: string;
+  avatarUrl: string;
+};
+
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 interface AuthContextData {
-  user?: any;
+  user: User | null;
   checkUsernameAvailability: (username: string) => void;
   loginWithGoogle: () => void;
   isUsernameAvailable: boolean;
@@ -15,32 +21,35 @@ interface AuthContextData {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
+const FAKE_USER = {
+  username: 'mpedroni',
+  name: 'Matheus Pedroni',
+  avatarUrl: 'https://github.com/mpedroni.png',
+};
+
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User>(FAKE_USER);
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
 
   function checkUsernameAvailability(username: string): void {
     setIsUsernameAvailable(username.length > 3);
   }
 
   function loginWithGoogle(): void {
-    const user = {
-      username: '',
-    };
+    setUser(FAKE_USER);
 
-    setUser(user);
-
-    if (user.username) setIsLogged(true);
+    if (FAKE_USER.username) setIsLogged(true);
   }
 
   function register(username: string): boolean {
-    const userData = { ...user, username };
-
-    /* save user data */
+    const user = {
+      ...FAKE_USER,
+      username,
+    };
 
     setIsLogged(true);
-    setUser(userData);
+    setUser(user);
 
     return true;
   }
