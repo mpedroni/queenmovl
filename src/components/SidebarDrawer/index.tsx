@@ -1,6 +1,6 @@
 // TODO: temporary (i promise)
 /* eslint-disable @next/next/no-img-element */
-
+import { useState } from 'react';
 import { FiSettings, FiX, FiPlus } from 'react-icons/fi';
 
 import styles from './styles.module.css';
@@ -9,10 +9,17 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useSidebarDrawer } from '../../contexts/SidebarDrawerContext';
 
 import { Menu } from './Menu';
+import { NewListModal } from '../Modals/NewListModal';
 
 export function SidebarDrawer() {
+  const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
+
   const { isOpen, close } = useSidebarDrawer();
   const { user } = useAuth();
+
+  function handleNewListModalState() {
+    setIsNewListModalOpen(!isNewListModalOpen);
+  }
 
   // TODO: move it to Redux
   const userLists = [
@@ -28,8 +35,14 @@ export function SidebarDrawer() {
 
   return (
     <>
+      <div
+        className="h-screen fixed top-0 right-0 bg-slate-900 opacity-70 w-full"
+        onClick={close}
+      />
+
       <nav
-        className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md z-10 p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']}`}
+        id="sidebar"
+        className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']}`}
       >
         <div className="flex justify-between mb-2">
           <FiSettings className="text-2xl text-body cursor-pointer hover:brightness-90 transition" />
@@ -59,6 +72,7 @@ export function SidebarDrawer() {
             w-full md:w-60 mx-auto mb-4
             disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none
           "
+          onClick={handleNewListModalState}
         >
           <FiPlus />
           Nova Lista
@@ -66,10 +80,9 @@ export function SidebarDrawer() {
 
         <Menu header="Minhas Listas" lists={userLists} />
       </nav>
-
-      <div
-        className="h-screen fixed top-0 right-0 bg-slate-900 opacity-50 w-full"
-        onClick={close}
+      <NewListModal
+        isOpen={isNewListModalOpen}
+        onRequestClose={handleNewListModalState}
       />
     </>
   );
