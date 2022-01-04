@@ -20,7 +20,6 @@ export function Menu({ header, lists }: MenuProps) {
 
   function handleNavigation(listId: number) {
     close();
-    console.log(listId);
     // router.push(`/lists/${listId}`);
   }
 
