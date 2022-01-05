@@ -10,6 +10,7 @@ import { useSidebarDrawer } from '../../contexts/SidebarDrawerContext';
 
 import { Menu } from './Menu';
 import { NewListModal } from '../Modals/NewListModal';
+import { BaseButton } from '../Button';
 
 export function SidebarDrawer() {
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
@@ -36,7 +37,7 @@ export function SidebarDrawer() {
   return (
     <>
       <div
-        className="h-screen fixed top-0 right-0 bg-slate-900 opacity-70 w-full"
+        className="fixed top-0 right-0 w-full h-screen bg-slate-900 opacity-70"
         onClick={close}
       />
 
@@ -45,8 +46,8 @@ export function SidebarDrawer() {
         className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']}`}
       >
         <div className="flex justify-between mb-2">
-          <FiSettings className="text-2xl text-body cursor-pointer hover:brightness-90 transition" />
-          <FiX className="text-2xl text-body cursor-pointer hover:brightness-90 transition" />
+          <FiSettings className="text-2xl transition cursor-pointer text-body hover:brightness-90" />
+          <FiX className="text-2xl transition cursor-pointer text-body hover:brightness-90" />
         </div>
 
         <div className="flex flex-col items-center mb-4">
@@ -54,29 +55,22 @@ export function SidebarDrawer() {
           <img
             src={user.avatarUrl}
             alt="User avatar"
-            className="w-1/4 rounded-full mb-4 border border-slate-900"
+            className="w-1/4 mb-4 border rounded-full border-slate-900"
           />
 
-          <span className="text-heading text-lg leading-none">{user.name}</span>
-          <span className="text-body text-sm font-bold">@{user.username}</span>
+          <span className="text-lg leading-none text-heading">{user.name}</span>
+          <span className="text-sm font-bold text-body">@{user.username}</span>
         </div>
 
-        <hr className="-mx-4 border-slate-900 mb-4" />
+        <hr className="mb-4 -mx-4 border-slate-900" />
 
-        <button
-          className="
-            flex items-center justify-center gap-4
-            bg-highlight rounded-md h-8 p-4 shadow-md
-            transition hover:brightness-90 active:filter-none
-            font-mono uppercase tracking-wider text-heading text-sm
-            w-full md:w-60 mx-auto mb-4
-            disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none
-          "
+        <BaseButton
+          Icon={FiPlus}
+          tw="mx-auto w-full md:w-auto bg-highlight mb-4"
           onClick={handleNewListModalState}
         >
-          <FiPlus />
           Nova Lista
-        </button>
+        </BaseButton>
 
         <Menu header="Minhas Listas" lists={userLists} />
       </nav>
