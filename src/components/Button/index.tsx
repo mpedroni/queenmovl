@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, cloneElement } from 'react';
 import { IconType } from 'react-icons';
 import classNames from 'classnames';
 
-const sizes = {
+export const sizes = {
   md: {
     text: 'h-9 text-sm p-4',
     icon: 'text-lg',
@@ -33,8 +33,14 @@ export function BaseButton({
     'flex items-center justify-center font-medium tracking-widest uppercase transition rounded-md shadow-md hover:brightness-90 text-heading disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none';
 
   return (
-    <button {...props} className={classNames(className, tw, sizes[size].text)}>
-      {!!Icon && <Icon className={`${sizes[size].icon} mr-2`} />}
+    <button
+      {...props}
+      className={classNames(className, tw, sizes[size].text)}
+      data-testid="button"
+    >
+      {!!Icon && (
+        <Icon className={`${sizes[size].icon} mr-2`} data-testid="icon" />
+      )}
       <span className="flex items-center justify-center">{props.children}</span>
     </button>
   );
