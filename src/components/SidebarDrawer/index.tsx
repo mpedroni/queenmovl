@@ -56,7 +56,10 @@ export function SidebarDrawer() {
       >
         <div className="flex justify-between mb-2">
           <FiSettings className="text-2xl transition cursor-pointer text-body hover:brightness-90" />
-          <FiX className="text-2xl transition cursor-pointer text-body hover:brightness-90" />
+          <FiX
+            className="text-2xl transition cursor-pointer text-body hover:brightness-90"
+            onClick={close}
+          />
         </div>
 
         <div className="flex flex-col items-center mb-4">
