@@ -8,15 +8,16 @@ export function Header() {
   const { handleState } = useSidebarDrawer();
 
   return (
-    <header className="container mx-auto px-4 pt-8 flex items-center gap-8">
+    <header className="container flex items-center gap-8 px-4 pt-8 mx-auto">
       {isLogged && (
         <FiMenu
-          className="text-heading text-2xl cursor-pointer"
+          data-testid="toggle-sidebar"
+          className="text-2xl cursor-pointer text-heading"
           onClick={handleState}
         />
       )}
 
-      <span className="font-title text-highlight text-2xl tracking-wider">
+      <span className="text-2xl tracking-wider font-title text-highlight">
         queenmovl
       </span>
     </header>
