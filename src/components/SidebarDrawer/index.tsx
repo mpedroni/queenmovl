@@ -1,6 +1,7 @@
 // TODO: temporary (i promise)
 /* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { FiSettings, FiX, FiPlus } from 'react-icons/fi';
 
 import styles from './styles.module.css';
@@ -14,12 +15,18 @@ import { BaseButton } from '../Button';
 
 export function SidebarDrawer() {
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
+  const router = useRouter();
 
   const { isOpen, close } = useSidebarDrawer();
   const { user } = useAuth();
 
   function handleNewListModalState() {
     setIsNewListModalOpen(!isNewListModalOpen);
+  }
+
+  function handleNavigation(listId: number) {
+    close();
+    router.push(`/lists/${listId}`);
   }
 
   // TODO: move it to Redux
@@ -37,12 +44,14 @@ export function SidebarDrawer() {
   return (
     <>
       <div
+        data-testid="overlay"
         className="fixed top-0 right-0 w-full h-screen bg-slate-900 opacity-70"
         onClick={close}
       />
 
       <nav
         id="sidebar"
+        data-testid="sidebar"
         className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']}`}
       >
         <div className="flex justify-between mb-2">
@@ -72,7 +81,11 @@ export function SidebarDrawer() {
           Nova Lista
         </BaseButton>
 
-        <Menu header="Minhas Listas" lists={userLists} />
+        <Menu
+          header="Minhas Listas"
+          lists={userLists}
+          onSelectList={handleNavigation}
+        />
       </nav>
       <NewListModal
         isOpen={isNewListModalOpen}

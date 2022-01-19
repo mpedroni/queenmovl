@@ -1,8 +1,4 @@
-import { useRouter } from 'next/router';
-
 import { Item } from './Item';
-
-import { useSidebarDrawer } from '../../../contexts/SidebarDrawerContext';
 
 type List = {
   id: number;
@@ -12,17 +8,10 @@ type List = {
 interface MenuProps {
   header: string;
   lists: List[];
+  onSelectList: (listId: number) => void;
 }
 
-export function Menu({ header, lists }: MenuProps) {
-  const router = useRouter();
-  const { close } = useSidebarDrawer();
-
-  function handleNavigation(listId: number) {
-    close();
-    // router.push(`/lists/${listId}`);
-  }
-
+export function Menu({ header, lists, onSelectList }: MenuProps) {
   return (
     <>
       <div className="text-body font-bold uppercase text-[0.6875rem]">
@@ -38,7 +27,7 @@ export function Menu({ header, lists }: MenuProps) {
           <Item
             key={list.id}
             list={list}
-            onClick={() => handleNavigation(list.id)}
+            onClick={() => onSelectList(list.id)}
           />
         ))}
       </ul>
