@@ -5,7 +5,7 @@ type List = {
   title: string;
 };
 
-interface MenuProps {
+export interface MenuProps {
   header: string;
   lists: List[];
   onSelectList: (listId: number) => void;
