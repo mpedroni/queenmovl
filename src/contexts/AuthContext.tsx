@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 type User = {
+  id: number;
   username: string;
   name: string;
   avatarUrl: string;
@@ -22,6 +23,7 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const FAKE_USER = {
+  id: 1,
   username: 'mpedroni',
   name: 'Matheus Pedroni',
   avatarUrl: 'https://github.com/mpedroni.png',
