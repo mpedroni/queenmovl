@@ -1,41 +1,40 @@
 // TODO: temporary (i promise)
 /* eslint-disable @next/next/no-img-element */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FiSettings, FiX, FiPlus } from 'react-icons/fi';
 
 import styles from './styles.module.css';
 
 import { useAuth } from '../../contexts/AuthContext';
+import { useLists } from '../../contexts/ListsContext';
 import { useSidebarDrawer } from '../../contexts/SidebarDrawerContext';
 
+import { BaseButton } from '../Button';
 import { Menu } from './Menu';
 import { NewListModal } from '../Modals/NewListModal';
-import { BaseButton } from '../Button';
 
 export function SidebarDrawer() {
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
   const router = useRouter();
 
+  const { lists, fetchLists, error, pickList } = useLists();
   const { isOpen, close } = useSidebarDrawer();
   const { user } = useAuth();
+
+  useEffect(() => {
+    fetchLists();
+  }, []);
 
   function handleNewListModalState() {
     setIsNewListModalOpen(!isNewListModalOpen);
   }
 
-  function handleNavigation(listId: number) {
+  function onSelectList(listId: number) {
+    pickList(listId);
     close();
     router.push(`/lists/${listId}`);
   }
-
-  // TODO: move it to Redux
-  const userLists = [
-    { id: 1, title: 'Filmes' },
-    { id: 2, title: 'Livros' },
-    { id: 3, title: 'Filmes para ver com o namorado' },
-    { id: 4, title: 'Filmes de terror' },
-  ];
 
   if (!isOpen) return null;
 
@@ -86,8 +85,8 @@ export function SidebarDrawer() {
 
         <Menu
           header="Minhas Listas"
-          lists={userLists}
-          onSelectList={handleNavigation}
+          lists={lists}
+          onSelectList={onSelectList}
         />
       </nav>
       <NewListModal

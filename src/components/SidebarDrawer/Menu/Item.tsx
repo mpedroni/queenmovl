@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
-import { LiHTMLAttributes, useEffect } from 'react';
+import { LiHTMLAttributes } from 'react';
+import { useLists } from '../../../contexts/ListsContext';
 
 type List = {
   id: number;
@@ -11,16 +11,15 @@ interface MenuItemProps extends LiHTMLAttributes<HTMLLIElement> {
 }
 
 export function Item({ list, ...props }: MenuItemProps) {
-  // TODO: set active link dynamically based on selected list
-  const active = list.id === 2;
+  const { activeList } = useLists();
 
-  return active ? (
-    <li className="text-highlight font-bold cursor-pointer" {...props}>
+  return list.id === activeList?.id ? (
+    <li className="font-bold cursor-pointer text-highlight" {...props}>
       {list.title}
     </li>
   ) : (
     <li
-      className="text-body cursor-pointer hover:brightness-90 transition"
+      className="transition cursor-pointer text-body hover:brightness-90"
       key={list.id}
       {...props}
     >
