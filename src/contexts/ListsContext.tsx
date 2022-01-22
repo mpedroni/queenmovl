@@ -11,7 +11,7 @@ interface ListsProviderProps {
   children: ReactNode;
 }
 
-interface ListsContextData {
+export interface ListsContextData {
   lists: List[];
   error?: Error;
   fetchLists: () => void;
@@ -28,7 +28,9 @@ class ListFetchError extends Error {
   }
 }
 
-const ListsContext = createContext<ListsContextData>({} as ListsContextData);
+export const ListsContext = createContext<ListsContextData>(
+  {} as ListsContextData
+);
 
 export function ListsProvider({ children }: ListsProviderProps) {
   const { user } = useAuth();

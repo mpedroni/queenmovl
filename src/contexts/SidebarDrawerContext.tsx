@@ -4,14 +4,14 @@ interface SidebarDrawerProviderProps {
   children: ReactNode;
 }
 
-interface SidebarDrawerContextData {
+export interface SidebarDrawerContextData {
   isOpen: boolean;
   close: () => void;
   open: () => void;
   handleState: () => void;
 }
 
-const SidebarDrawerContext = createContext<SidebarDrawerContextData>(
+export const SidebarDrawerContext = createContext<SidebarDrawerContextData>(
   {} as SidebarDrawerContextData
 );
 

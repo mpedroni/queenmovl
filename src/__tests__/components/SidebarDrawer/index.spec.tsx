@@ -1,68 +1,47 @@
-import { render, screen } from '@testing-library/react';
-import { mocked } from 'jest-mock';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import {
+  customRender as render,
+  CustomRenderOptions,
+} from '../../customRender';
 
 import { SidebarDrawer } from '../../../components/SidebarDrawer';
 
-import { useAuth } from '../../../contexts/AuthContext';
-import { useSidebarDrawer } from '../../../contexts/SidebarDrawerContext';
-
-jest.mock('../../../contexts/SidebarDrawerContext');
-jest.mock('../../../contexts/AuthContext');
-
-function getSidebarMocked(options: any) {
-  const useSidebarDrawerMocked = mocked(useSidebarDrawer);
-
-  useSidebarDrawerMocked.mockReset();
-  useSidebarDrawerMocked.mockReturnValueOnce(options);
-}
-
-function getAuthMocked(options: any) {
-  const useAuthMocked = mocked(useAuth);
-
-  useAuthMocked.mockReset();
-  useAuthMocked.mockReturnValueOnce(options);
-}
-
-describe('SidebarDrawer Component', () => {
-  beforeEach(() => {
-    getSidebarMocked({ isOpen: true });
-    getAuthMocked({
+const openSidebarOptions: CustomRenderOptions = {
+  providerProps: {
+    authProviderProps: {
       user: {
-        avatarUrl: 'asdawd',
+        avatarUrl: 'https://johndoe.com/avatar',
+        id: 1,
         name: 'John Doe',
         username: 'johndoe',
       },
-    });
-  });
+    },
+    sidebarDrawerProviderProps: {
+      isOpen: true,
+    },
+  },
+};
 
-  it('should be visible when `isOpen` is `true` and user is logged', () => {
-    render(<SidebarDrawer />);
-
-    expect(screen.getByTestId('sidebar')).toBeInTheDocument();
-  });
-
-  it('should be hidden when `isOpen` is `false` or user is not logged', () => {
-    getSidebarMocked({ isOpen: false });
-    getAuthMocked({ user: null });
-
+describe('SidebarDrawer Component', () => {
+  it('should be hidden when `isOpen` is `false` or user is not logged. Default behavior', () => {
     render(<SidebarDrawer />);
 
     expect(screen.queryByTestId('sidebar')).toBeNull();
   });
 
+  it('should be visible when `isOpen` is `true` and user is logged', () => {
+    render(<SidebarDrawer />, openSidebarOptions);
+
+    expect(screen.getByTestId('sidebar')).toBeInTheDocument();
+  });
+
   it('should hides when user click in the overlay', () => {
-    const close = jest.fn();
-
-    getSidebarMocked({
-      isOpen: true,
-      close,
-    });
-
-    render(<SidebarDrawer />);
+    const { providerProps } = render(<SidebarDrawer />, openSidebarOptions);
 
     userEvent.click(screen.getByTestId('overlay'));
 
-    expect(close).toBeCalledTimes(1);
+    expect(providerProps.sidebarDrawerProviderProps?.close).toBeCalledTimes(1);
   });
 });

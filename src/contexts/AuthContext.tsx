@@ -11,7 +11,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-interface AuthContextData {
+export interface AuthContextData {
   user: User | null;
   checkUsernameAvailability: (username: string) => void;
   loginWithGoogle: () => void;
@@ -20,7 +20,9 @@ interface AuthContextData {
   register: (username: string) => boolean;
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+export const AuthContext = createContext<AuthContextData>(
+  {} as AuthContextData
+);
 
 const FAKE_USER = {
   id: 1,
