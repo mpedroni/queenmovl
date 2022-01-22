@@ -32,4 +32,5 @@ module.exports = {
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   testEnvironment: 'jest-environment-jsdom',
+  testRegex: '(/__tests__/.*(\\.|/)(test|spec))\\.[jt]sx?$',
 };
