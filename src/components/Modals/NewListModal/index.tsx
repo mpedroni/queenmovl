@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { FiX } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
-import { api } from '../../services/api';
+import { SelectListPreset } from './SelectListPreset';
+
+import { api } from '../../../services/api';
+import { ListData } from './ListData';
 
 interface NewListModalProps {
   isOpen: boolean;
@@ -14,10 +17,15 @@ type ListPreset = {
   name: string;
 };
 
+type List = {
+  preset?: ListPreset;
+};
+
 const boxShadow = 'shadow-[4px_4px_4px_0_rgba(0,0,0,.25)]';
 
 export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
-  const [preset, setPreset] = useState<string>();
+  const [list, setList] = useState<List>({} as List);
+  const [step, setStep] = useState<'preset' | 'data'>('preset');
   const [presets, setPresets] = useState<ListPreset[]>([] as ListPreset[]);
 
   async function fetchListPresets() {
@@ -28,6 +36,15 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
     } catch {
       toast.error('Ops! Não foi possível carregar os presets de listas');
     }
+  }
+
+  function handlePresetSelect(presetId: string) {
+    const preset = presets.find((preset) => preset.id === Number(presetId));
+    setList({ ...list, preset });
+  }
+
+  function handleNextStep() {
+    if (step === 'preset') setStep('data');
   }
 
   useEffect(() => {
@@ -48,7 +65,9 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
         className={`absolute flex flex-col justify-between p-4 rounded-md top-0 right-0 bottom-0 left-0 w-full md:min-w-max md:w-9/12 lg:w-1/2 h-screen md:h-2/4 m-auto bg-slate-800 ${boxShadow}`}
       >
         <div className="flex items-center justify-between mb-4 text-heading">
-          <span className="text-lg font-bold">Criar Lista</span>
+          <span className="text-lg font-bold">
+            Criar Lista ({step === 'data' && list.preset?.name})
+          </span>
           <FiX
             data-testid="close-icon"
             className="text-2xl transition cursor-pointer hover:brightness-90"
@@ -58,24 +77,14 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
 
         <hr className="mb-4 -mx-4 border-slate-900" />
 
-        <div className="mb-2 text-sm font-bold text-body">
-          Qual modelo de lista deseja utilizar?
-        </div>
-        <select
-          value={preset}
-          onChange={(e) => setPreset(e.target.value)}
-          className="w-full h-8 px-2 mb-2 bg-gray-700 rounded-md outline-none text-body"
-        >
-          <option value="" defaultValue="">
-            Personalizado
-          </option>
+        {step === 'preset' && (
+          <SelectListPreset
+            presets={presets}
+            onSelectPreset={handlePresetSelect}
+          />
+        )}
 
-          {presets.map((preset) => (
-            <option key={preset.id} value={preset.id}>
-              {preset.name}
-            </option>
-          ))}
-        </select>
+        {step === 'data' && <ListData />}
 
         <div className="flex items-end justify-end gap-8 mt-auto mb-2">
           <button
@@ -84,7 +93,10 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
           >
             Cancelar
           </button>
-          <button className="font-medium uppercase transition text-highlight hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none">
+          <button
+            onClick={handleNextStep}
+            className="font-medium uppercase transition text-highlight hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none"
+          >
             Próximo
           </button>
         </div>
