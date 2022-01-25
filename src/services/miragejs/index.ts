@@ -1,4 +1,4 @@
-import { createServer, Model } from 'miragejs';
+import { createServer, Response } from 'miragejs';
 
 export function makeServer() {
   createServer({
@@ -6,12 +6,13 @@ export function makeServer() {
       this.namespace = 'api';
 
       this.get('/users/:id/lists', () => ({
-        lists: [
-          { id: 1, title: 'Filmes' },
-          { id: 2, title: 'Livros' },
-          { id: 3, title: 'Filmes de terror' },
-          { id: 4, title: 'Filmes do oscar' },
-          { id: 5, title: 'Livros técnicos' },
+        lists: [],
+      }));
+
+      this.get('/lists/presets', () => ({
+        presets: [
+          { id: 1, name: 'Filmes' },
+          { id: 2, name: 'Livros' },
         ],
       }));
     },

@@ -1,15 +1,38 @@
-import { useState } from 'react';
-import { FiChevronDown, FiX } from 'react-icons/fi';
+import { useEffect, useState } from 'react';
+import { FiX } from 'react-icons/fi';
+import { toast } from 'react-toastify';
+
+import { api } from '../../services/api';
 
 interface NewListModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
+type ListPreset = {
+  id: number;
+  name: string;
+};
+
 const boxShadow = 'shadow-[4px_4px_4px_0_rgba(0,0,0,.25)]';
 
 export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
-  const [preset, setPreset] = useState('');
+  const [preset, setPreset] = useState<string>();
+  const [presets, setPresets] = useState<ListPreset[]>([] as ListPreset[]);
+
+  async function fetchListPresets() {
+    try {
+      const response = await api.get('/lists/presets');
+
+      setPresets(response.data.presets);
+    } catch {
+      toast.error('Ops! Não foi possível carregar os presets de listas');
+    }
+  }
+
+  useEffect(() => {
+    isOpen && fetchListPresets();
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -43,8 +66,15 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
           onChange={(e) => setPreset(e.target.value)}
           className="w-full h-8 px-2 mb-2 bg-gray-700 rounded-md outline-none text-body"
         >
-          <option value="custom">Personalizado</option>
-          <option value="movies">Filmes</option>
+          <option value="" defaultValue="">
+            Personalizado
+          </option>
+
+          {presets.map((preset) => (
+            <option key={preset.id} value={preset.id}>
+              {preset.name}
+            </option>
+          ))}
         </select>
 
         <div className="flex items-end justify-end gap-8 mt-auto mb-2">
@@ -54,10 +84,7 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
           >
             Cancelar
           </button>
-          <button
-            disabled={!preset}
-            className="font-medium uppercase transition text-highlight hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none"
-          >
+          <button className="font-medium uppercase transition text-highlight hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none">
             Próximo
           </button>
         </div>
