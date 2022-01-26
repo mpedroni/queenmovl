@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { FiX } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
+import { useLists } from '../../../contexts/ListsContext';
+
 import { api } from '../../../services/api';
 import { ListData } from './ListData';
 // import { SelectListPreset } from './SelectListPreset';
@@ -11,16 +13,24 @@ interface NewListModalProps {
   onRequestClose: () => void;
 }
 
-type ListCreateParams = {
-  name: string;
-};
-
 const boxShadow = 'shadow-[4px_4px_4px_0_rgba(0,0,0,.25)]';
 
 export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
-  async function createList(listData: ListCreateParams) {}
+  const { createList, error } = useLists();
 
   if (!isOpen) return null;
+
+  if (error) {
+    toast.error(error.message, {
+      toastId: 'new-list-error-toast',
+    });
+  }
+
+  async function handleListCreate(listParams: any) {
+    const list = await createList(listParams);
+
+    if (list) toast.success('Lista criada com sucesso');
+  }
 
   return (
     <>
@@ -55,7 +65,7 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
           />
         )} */}
 
-        <ListData onCancel={onRequestClose} onConfirm={createList} />
+        <ListData onCancel={onRequestClose} onConfirm={handleListCreate} />
       </div>
     </>
   );

@@ -18,12 +18,12 @@ export function SidebarDrawer() {
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
   const router = useRouter();
 
-  const { lists, fetchLists, error, pickList } = useLists();
+  const { lists, getLists, error, pickList } = useLists();
   const { isOpen, close } = useSidebarDrawer();
   const { user } = useAuth();
 
   useEffect(() => {
-    fetchLists();
+    getLists();
   }, []);
 
   function handleNewListModalState() {

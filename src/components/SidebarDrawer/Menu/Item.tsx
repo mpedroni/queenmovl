@@ -3,7 +3,7 @@ import { useLists } from '../../../contexts/ListsContext';
 
 type List = {
   id: number;
-  title: string;
+  name: string;
 };
 
 interface MenuItemProps extends LiHTMLAttributes<HTMLLIElement> {
@@ -15,7 +15,7 @@ export function Item({ list, ...props }: MenuItemProps) {
 
   return list.id === activeList?.id ? (
     <li className="font-bold cursor-pointer text-highlight" {...props}>
-      {list.title}
+      {list.name}
     </li>
   ) : (
     <li
@@ -23,7 +23,7 @@ export function Item({ list, ...props }: MenuItemProps) {
       key={list.id}
       {...props}
     >
-      {list.title}
+      {list.name}
     </li>
   );
 }

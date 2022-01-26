@@ -54,6 +54,7 @@ export function ListData({ onCancel, onConfirm }: ListDataProps) {
 
       <div className="flex items-end justify-end gap-8 mt-auto mb-2">
         <button
+          type="button"
           className="font-medium uppercase transition text-body hover:brightness-90"
           onClick={onCancel}
         >

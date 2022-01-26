@@ -2,7 +2,7 @@ import { Item } from './Item';
 
 type List = {
   id: number;
-  title: string;
+  name: string;
 };
 
 export interface MenuProps {

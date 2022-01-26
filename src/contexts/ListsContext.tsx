@@ -4,7 +4,7 @@ import { useAuth } from './AuthContext';
 
 type List = {
   id: number;
-  title: string;
+  name: string;
 };
 
 interface ListsProviderProps {
@@ -14,10 +14,15 @@ interface ListsProviderProps {
 export interface ListsContextData {
   lists: List[];
   error?: Error;
-  fetchLists: () => void;
   activeList?: List;
+  getLists: () => void;
+  createList: (listCreateParams: ListCreateParams) => Promise<List | void>;
   pickList: (listOrListId: List | number) => void;
 }
+
+type ListCreateParams = {
+  name: string;
+};
 
 class ListFetchError extends Error {
   constructor() {
@@ -39,7 +44,7 @@ export function ListsProvider({ children }: ListsProviderProps) {
   const [error, setError] = useState<Error>();
   const [activeList, setActiveList] = useState<List>();
 
-  async function fetchLists() {
+  async function getLists() {
     if (!user) return;
 
     try {
@@ -51,6 +56,24 @@ export function ListsProvider({ children }: ListsProviderProps) {
     }
   }
 
+  async function createList(
+    listCreateParams: ListCreateParams
+  ): Promise<List | void> {
+    try {
+      const response = await api.post<{ list: List }>('/lists', {
+        list: { ...listCreateParams, user: '1' },
+      });
+
+      return response.data.list;
+    } catch {
+      setError(
+        new Error(
+          'Ops! Ocorreu um erro na criação da lista. Por favor, tente novamente'
+        )
+      );
+    }
+  }
+
   function pickList(listOrListId: List | number) {
     typeof listOrListId === 'number'
       ? setActiveList(lists.find((list) => list.id === listOrListId))
@@ -59,7 +82,14 @@ export function ListsProvider({ children }: ListsProviderProps) {
 
   return (
     <ListsContext.Provider
-      value={{ lists, error, fetchLists, activeList, pickList }}
+      value={{
+        lists,
+        error,
+        getLists,
+        activeList,
+        pickList,
+        createList,
+      }}
     >
       {children}
     </ListsContext.Provider>
