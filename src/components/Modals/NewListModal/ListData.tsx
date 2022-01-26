@@ -36,7 +36,6 @@ export function ListData({ onCancel, onConfirm }: ListDataProps) {
   const onSubmit: SubmitHandler<FormInputs> = (data, event) => {
     event?.preventDefault();
 
-    console.log(data);
     onConfirm(data);
   };
 
