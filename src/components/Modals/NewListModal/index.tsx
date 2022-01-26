@@ -21,6 +21,10 @@ type List = {
   preset?: ListPreset;
 };
 
+type ListCreateParams = {
+  name: string;
+};
+
 const boxShadow = 'shadow-[4px_4px_4px_0_rgba(0,0,0,.25)]';
 
 export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
@@ -43,8 +47,8 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
     setList({ ...list, preset });
   }
 
-  function handleNextStep() {
-    if (step === 'preset') setStep('data');
+  function createList(listData: ListCreateParams) {
+    console.log(listData);
   }
 
   useEffect(() => {
@@ -62,44 +66,34 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
       />
 
       <div
-        className={`absolute flex flex-col justify-between p-4 rounded-md top-0 right-0 bottom-0 left-0 w-full md:min-w-max md:w-9/12 lg:w-1/2 h-screen md:h-2/4 m-auto bg-slate-800 ${boxShadow}`}
+        className={`absolute flex flex-col p-4 rounded-md top-0 right-0 bottom-0 left-0 w-full md:min-w-max md:w-9/12 lg:w-1/2 h-screen md:h-2/4 m-auto bg-slate-800 ${boxShadow}`}
       >
-        <div className="flex items-center justify-between mb-4 text-heading">
-          <span className="text-lg font-bold">
-            Criar Lista ({step === 'data' && list.preset?.name})
-          </span>
-          <FiX
-            data-testid="close-icon"
-            className="text-2xl transition cursor-pointer hover:brightness-90"
-            onClick={onRequestClose}
-          />
+        <div>
+          <div className="flex items-center justify-between mb-4 text-heading">
+            <span className="text-lg font-bold">
+              Criar Lista ({step === 'data' && list.preset?.name})
+            </span>
+            <FiX
+              data-testid="close-icon"
+              className="text-2xl transition cursor-pointer hover:brightness-90"
+              onClick={onRequestClose}
+            />
+          </div>
+          <hr className="mb-4 -mx-4 border-slate-900" />
         </div>
-
-        <hr className="mb-4 -mx-4 border-slate-900" />
 
         {step === 'preset' && (
           <SelectListPreset
             presets={presets}
             onSelectPreset={handlePresetSelect}
+            onCancel={onRequestClose}
+            onConfirm={() => setStep('data')}
           />
         )}
 
-        {step === 'data' && <ListData />}
-
-        <div className="flex items-end justify-end gap-8 mt-auto mb-2">
-          <button
-            className="font-medium uppercase transition text-body hover:brightness-90"
-            onClick={onRequestClose}
-          >
-            Cancelar
-          </button>
-          <button
-            onClick={handleNextStep}
-            className="font-medium uppercase transition text-highlight hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none"
-          >
-            Próximo
-          </button>
-        </div>
+        {step === 'data' && (
+          <ListData onCancel={onRequestClose} onConfirm={createList} />
+        )}
       </div>
     </>
   );

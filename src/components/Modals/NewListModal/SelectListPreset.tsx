@@ -8,14 +8,18 @@ type ListPreset = {
 interface SelectListPresetProps {
   presets: ListPreset[];
   onSelectPreset: (preset: string) => void;
+  onCancel: () => void;
+  onConfirm: () => void;
 }
 
 export function SelectListPreset({
   presets,
   onSelectPreset,
+  onCancel,
+  onConfirm,
 }: SelectListPresetProps) {
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <div className="mb-2 text-sm font-bold text-body">
         Qual modelo de lista deseja utilizar?
       </div>
@@ -32,6 +36,21 @@ export function SelectListPreset({
           </option>
         ))}
       </select>
+
+      <div className="flex items-end justify-end gap-8 mt-auto mb-2">
+        <button
+          className="font-medium uppercase transition text-body hover:brightness-90"
+          onClick={onCancel}
+        >
+          Cancelar
+        </button>
+        <button
+          onClick={onConfirm}
+          className="font-medium uppercase transition text-highlight hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:filter-none"
+        >
+          Próximo
+        </button>
+      </div>
     </div>
   );
 }
