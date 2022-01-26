@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 type ListPreset = {
   id: number;
   name: string;

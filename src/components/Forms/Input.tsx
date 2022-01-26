@@ -1,17 +1,18 @@
-import classNames from 'classnames';
 import React, {
   forwardRef,
   ForwardRefRenderFunction,
   InputHTMLAttributes,
 } from 'react';
+import classNames from 'classnames';
 
 type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'className'> & {
   label: string;
+  error?: string;
   tw?: string;
 };
 
 const InputComponent: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { label, tw, ...props }: InputProps,
+  { label, tw, error, ...props }: InputProps,
   ref
 ) => {
   const className =
@@ -23,6 +24,8 @@ const InputComponent: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         {label}
       </span>
       <input {...props} className={classNames(className, tw)} ref={ref} />
+
+      <p className="flex items-center mt-1 text-xs text-error">{error}</p>
     </label>
   );
 };
