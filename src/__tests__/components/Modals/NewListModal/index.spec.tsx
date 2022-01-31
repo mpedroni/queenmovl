@@ -1,13 +1,16 @@
-import { render, screen } from '@testing-library/react';
+import { getByText, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ToastContainer } from 'react-toastify';
 
-import { NewListModal } from '../../../components/Modals/NewListModal';
+import { NewListModal } from '../../../../components/Modals/NewListModal';
+
+import { customRender as render } from '../../../customRender';
 
 describe('NewListModal component', () => {
   it('should renders correctly', () => {
     render(<NewListModal isOpen={true} onRequestClose={() => {}} />);
 
-    expect(screen.getByText('Criar Lista')).toBeInTheDocument();
+    expect(screen.getByText(/Criar Lista/i)).toBeInTheDocument();
   });
 
   it('should not render when prop `isOpen` is `false`', () => {
@@ -47,5 +50,29 @@ describe('NewListModal component', () => {
     );
 
     expect(onRequestClose).toBeCalledTimes(1);
+  });
+
+  it('should renders error message when ListsContext `error` data is not null', async () => {
+    const error = {
+      message: 'Test error message',
+      name: 'test-error',
+    };
+
+    render(
+      <>
+        <NewListModal isOpen={true} onRequestClose={() => {}} />
+
+        <ToastContainer />
+      </>,
+      {
+        providerProps: {
+          listsProviderProps: {
+            error,
+          },
+        },
+      }
+    );
+
+    expect(await screen.findByText(error.message)).toBeInTheDocument();
   });
 });
