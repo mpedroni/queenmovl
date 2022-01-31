@@ -1,0 +1,17 @@
+import { TBody } from './TBody';
+import { THead, Header } from './THead';
+
+interface TableProps {
+  headers: Header[];
+  items: any[];
+}
+
+export function Table({ headers, items }: TableProps) {
+  return (
+    <table>
+      <THead headers={headers} />
+
+      <TBody headers={headers} items={items} />
+    </table>
+  );
+}
