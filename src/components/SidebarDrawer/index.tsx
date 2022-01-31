@@ -1,7 +1,6 @@
 // TODO: temporary (i promise)
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { FiSettings, FiX, FiPlus } from 'react-icons/fi';
 
 import styles from './styles.module.css';
@@ -16,9 +15,8 @@ import { NewListModal } from '../Modals/NewListModal';
 
 export function SidebarDrawer() {
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
-  const router = useRouter();
 
-  const { lists, getLists, error, pickList } = useLists();
+  const { lists, getLists, pickList } = useLists();
   const { isOpen, close } = useSidebarDrawer();
   const { user } = useAuth();
 
@@ -33,7 +31,6 @@ export function SidebarDrawer() {
   function onSelectList(listId: number) {
     pickList(listId);
     close();
-    router.push(`/lists/${listId}`);
   }
 
   if (!isOpen) return null;
@@ -51,7 +48,7 @@ export function SidebarDrawer() {
       <nav
         id="sidebar"
         data-testid="sidebar"
-        className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']}`}
+        className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']} z-10`}
       >
         <div className="flex justify-between mb-2">
           <FiSettings className="text-2xl transition cursor-pointer text-body hover:brightness-90" />

@@ -13,7 +13,13 @@ export function THead({ headers }: THeadProps) {
     <thead>
       <tr>
         {headers.map((header) => (
-          <th key={header.id}>{header.text}</th>
+          <th
+            key={header.id}
+            align="center"
+            className="py-4 font-bold text-heading bg-highlight"
+          >
+            {header.text}
+          </th>
         ))}
       </tr>
     </thead>
