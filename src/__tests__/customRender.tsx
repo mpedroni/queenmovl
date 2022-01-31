@@ -54,7 +54,7 @@ const defaultProviderProps: CustomProviderProps = {
   },
 
   listsProviderProps: {
-    fetchLists: jest.fn(),
+    getLists: jest.fn(),
     lists: [],
     pickList: jest.fn(),
   },

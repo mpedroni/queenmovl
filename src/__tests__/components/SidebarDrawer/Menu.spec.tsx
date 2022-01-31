@@ -6,8 +6,8 @@ import { Menu, MenuProps } from '../../../components/SidebarDrawer/Menu';
 const createMenuProps = ({
   header = 'Test Header',
   lists = [
-    { id: 1, title: 'Movies list' },
-    { id: 2, title: 'Books list' },
+    { id: 1, name: 'Movies list' },
+    { id: 2, name: 'Books list' },
   ],
   onSelectList = jest.fn(),
 }: Partial<MenuProps>): MenuProps => ({
