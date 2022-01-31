@@ -64,7 +64,11 @@ export function ListsProvider({ children }: ListsProviderProps) {
         list: { ...listCreateParams, user: '1' },
       });
 
-      return response.data.list;
+      const list = response.data.list;
+
+      setLists([...lists, list]);
+
+      return list;
     } catch {
       setError(
         new Error(
