@@ -3,19 +3,19 @@ import { Header } from './THead';
 interface TBodyProps {
   items: any[];
   headers: Header[];
-  emptyMessage?: string;
+  noDataMessage?: string;
 }
 
 export function TBody({
   items,
   headers,
-  emptyMessage = 'Parece que esta lista ainda está vazia. Experimente adicionar alguns itens 😃',
+  noDataMessage = 'Parece que esta lista ainda está vazia. Experimente adicionar alguns itens 😃',
 }: TBodyProps) {
   return (
     <tbody>
       {items.length === 0 && (
         <tr className="bg-slate-800">
-          <td className="p-4 text-body">{emptyMessage}</td>
+          <td className="p-4 text-body">{noDataMessage}</td>
         </tr>
       )}
 
