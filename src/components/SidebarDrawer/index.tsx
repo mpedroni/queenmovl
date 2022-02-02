@@ -48,7 +48,7 @@ export function SidebarDrawer() {
       <nav
         id="sidebar"
         data-testid="sidebar"
-        className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']} z-10`}
+        className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']}`}
       >
         <div className="flex justify-between mb-2">
           <FiSettings className="text-2xl transition cursor-pointer text-body hover:brightness-90" />

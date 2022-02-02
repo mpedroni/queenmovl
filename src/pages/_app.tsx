@@ -19,18 +19,18 @@ if (process.env.NODE_ENV === 'development') {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider>
+    <SidebarDrawerProvider>
       <ListsProvider>
-        <SidebarDrawerProvider>
+        <AuthProvider>
           <Header />
 
-          <SidebarDrawer />
-        </SidebarDrawerProvider>
-        <Component {...pageProps} />
-      </ListsProvider>
+          <Component {...pageProps} />
 
-      <ToastContainer theme="colored" />
-    </AuthProvider>
+          <ToastContainer theme="colored" />
+          <SidebarDrawer />
+        </AuthProvider>
+      </ListsProvider>
+    </SidebarDrawerProvider>
   );
 }
 

@@ -11,13 +11,9 @@ interface UserListProps {
 }
 
 export function UserList({ list }: UserListProps) {
-  function handleNewItem() {
-    console.log('add a new item');
-  }
-
   return (
     <>
-      <Controls onAddItem={handleNewItem} className="mb-8" />
+      <Controls className="mb-8" />
 
       <Table headers={[]} items={[]} />
     </>
