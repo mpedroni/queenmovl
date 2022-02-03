@@ -48,6 +48,8 @@ export function makeServer() {
     },
 
     routes() {
+      this.passthrough('https://api.themoviedb.org/**');
+
       this.namespace = 'api';
 
       this.get('/users/:id/lists', (schema, request) => {
@@ -70,6 +72,9 @@ export function makeServer() {
       //     { id: 2, name: 'Livros' },
       //   ],
       // }));
+
+      this.namespace = '';
+      this.passthrough();
     },
   });
 
