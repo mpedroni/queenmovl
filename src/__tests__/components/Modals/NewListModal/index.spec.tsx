@@ -21,15 +21,6 @@ describe('NewListModal component', () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it('should execute the function `onRequestClose` when click on overlay', () => {
-    const onRequestClose = jest.fn();
-    render(<NewListModal isOpen={true} onRequestClose={onRequestClose} />);
-
-    userEvent.click(screen.getByTestId('overlay'));
-
-    expect(onRequestClose).toBeCalledTimes(1);
-  });
-
   it('should execute the function `onRequestClose` when click on close button', () => {
     const onRequestClose = jest.fn();
     render(<NewListModal isOpen={true} onRequestClose={onRequestClose} />);

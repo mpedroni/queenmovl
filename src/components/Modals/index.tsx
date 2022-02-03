@@ -23,7 +23,7 @@ export function Modal({
         onClick={onRequestClose}
       />
 
-      <div className="absolute top-0 bottom-0 left-0 right-0 flex flex-col w-full h-screen p-4 m-auto rounded-md md:min-w-max md:w-9/12 lg:w-1/2 md:h-2/4 bg-slate-800 shadow-[4px_4px_4px_0_rgba(0,0,0,.25)]">
+      <div className="absolute top-0 bottom-0 left-0 right-0 flex flex-col w-full h-screen p-4 m-auto rounded-md md:w-9/12 lg:w-1/2 md:max-h-[750px] overflow-y-scroll bg-slate-800 shadow-[4px_4px_4px_0_rgba(0,0,0,.25)]">
         <div className="flex items-center justify-between mb-4 text-heading">
           <span className="text-lg font-bold">{headline}</span>
           <FiX
