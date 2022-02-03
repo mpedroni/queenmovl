@@ -21,7 +21,7 @@ type PosterSize =
   | 'original';
 
 export function MoviePoster({ movie }: MoviePosterProps) {
-  if (movie.poster_path === '')
+  if (!movie.poster_path)
     return (
       <Image
         src={DefaultPosterSvg}

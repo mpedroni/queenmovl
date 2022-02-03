@@ -1,3 +1,5 @@
+import { HTMLAttributes } from 'react';
+
 type Movie = {
   title: string;
   original_title: string;
@@ -5,15 +7,16 @@ type Movie = {
   overview: string;
 };
 
-interface MovieDataProps {
+interface MovieDataProps extends HTMLAttributes<HTMLDivElement> {
   movie: Movie;
 }
 
 export function MovieData({
   movie: { original_title, overview, release_date, title },
+  ...props
 }: MovieDataProps) {
   return (
-    <div>
+    <div {...props}>
       <div className="mb-2">
         <h3 className="text-base font-bold text-heading">{title}</h3>
 
