@@ -21,8 +21,8 @@ export function SidebarDrawer() {
   const { user } = useAuth();
 
   useEffect(() => {
-    getLists();
-  }, []);
+    if (!!user) getLists();
+  }, [user]);
 
   function handleNewListModalState() {
     setIsNewListModalOpen(!isNewListModalOpen);
@@ -33,9 +33,7 @@ export function SidebarDrawer() {
     close();
   }
 
-  if (!isOpen) return null;
-
-  if (!user) return null;
+  if (!isOpen || !user) return null;
 
   return (
     <>

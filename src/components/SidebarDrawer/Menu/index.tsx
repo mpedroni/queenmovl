@@ -1,7 +1,7 @@
 import { Item } from './Item';
 
 type List = {
-  id: number;
+  id: string;
   name: string;
 };
 

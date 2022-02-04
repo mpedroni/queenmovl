@@ -9,7 +9,7 @@ interface AuthProviderProps {
 
 export interface AuthContextData {
   user: User | null;
-  login: () => Promise<User | null>;
+  login: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextData>(
@@ -19,14 +19,10 @@ export const AuthContext = createContext<AuthContextData>(
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
 
-  async function login(): Promise<User | null> {
+  async function login(): Promise<void> {
     const result = await loginWithGoogle();
 
-    if (!result) return null;
-
-    setUser(result.user);
-
-    return result.user;
+    setUser(result?.user || null);
   }
 
   return (

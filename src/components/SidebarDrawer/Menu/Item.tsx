@@ -2,7 +2,7 @@ import { LiHTMLAttributes } from 'react';
 import { useLists } from '../../../contexts/ListsContext';
 
 type List = {
-  id: number;
+  id: string;
   name: string;
 };
 

@@ -4,17 +4,19 @@ import { FcGoogle } from 'react-icons/fc';
 import { useAuth } from '../contexts/AuthContext';
 
 import { BaseButton } from '../components/Button';
+import { useEffect } from 'react';
 
 export default function Home() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+
+  useEffect(() => {
+    if (!!user) router.push('/dashboard');
+  }, [user]);
 
   const router = useRouter();
 
   async function handleLogin() {
-    const user = await login();
-
-    console.log(user);
-    if (user) router.push('/dashboard');
+    await login();
   }
 
   return (

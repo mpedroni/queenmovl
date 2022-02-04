@@ -1,9 +1,13 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-import { api } from '../services/api';
-import { List } from '../services/firebase/@types/list';
 import { create } from '../services/firebase/lists';
+import { watch } from '../services/firebase/lists';
 import { useAuth } from './AuthContext';
+
+export interface List {
+  id: string;
+  name: string;
+}
 
 interface ListsProviderProps {
   children: ReactNode;
@@ -45,13 +49,9 @@ export function ListsProvider({ children }: ListsProviderProps) {
   async function getLists() {
     if (!user) return;
 
-    try {
-      const response = await api.get(`/users/${user.uid}/lists`);
-
-      setLists(response.data.lists);
-    } catch {
-      setError(new ListFetchError());
-    }
+    watch((lists) => {
+      setLists(lists);
+    });
   }
 
   async function createList(listCreateParams: ListCreateParams) {

@@ -9,12 +9,11 @@ import {
 import { app } from './app';
 
 export const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 if (process.env.NODE_ENV !== 'production') {
   connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
 }
-
-const provider = new GoogleAuthProvider();
 
 interface AuthErrorParams {
   code: string;

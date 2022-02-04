@@ -1,8 +1,8 @@
 import { push, update, ref } from 'firebase/database';
 
-import { auth } from './auth';
-import { List, listsRef } from './@types/list';
-import { database } from './database';
+import { auth } from '../auth';
+import { List, listsRef } from '../@types/list';
+import { database } from '../database';
 
 interface CreateParams {
   name: string;
