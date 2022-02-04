@@ -42,7 +42,7 @@ export async function searchMovie({
      */
 
     const res = await fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${query}&${language}`,
+      `https://api.themoviedb.org/3/search/movie?query=${query}&language=${language}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
