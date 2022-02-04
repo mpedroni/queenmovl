@@ -1,11 +1,9 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
-import { api } from '../services/api';
-import { useAuth } from './AuthContext';
 
-export type List = {
-  id: number;
-  name: string;
-};
+import { api } from '../services/api';
+import { List } from '../services/firebase/@types/list';
+import { create } from '../services/firebase/lists';
+import { useAuth } from './AuthContext';
 
 interface ListsProviderProps {
   children: ReactNode;
@@ -16,8 +14,8 @@ export interface ListsContextData {
   error?: Error;
   activeList?: List;
   getLists: () => void;
-  createList: (listCreateParams: ListCreateParams) => Promise<List | void>;
-  pickList: (listOrListId: List | number) => void;
+  createList: (listCreateParams: ListCreateParams) => Promise<List | undefined>;
+  pickList: (listOrListId: List | string) => void;
 }
 
 type ListCreateParams = {
@@ -48,7 +46,7 @@ export function ListsProvider({ children }: ListsProviderProps) {
     if (!user) return;
 
     try {
-      const response = await api.get(`/users/${user.id}/lists`);
+      const response = await api.get(`/users/${user.uid}/lists`);
 
       setLists(response.data.lists);
     } catch {
@@ -56,32 +54,22 @@ export function ListsProvider({ children }: ListsProviderProps) {
     }
   }
 
-  async function createList(
-    listCreateParams: ListCreateParams
-  ): Promise<List | void> {
-    try {
-      const response = await api.post<{ list: List }>('/lists', {
-        list: { ...listCreateParams, user: '1' },
-      });
+  async function createList(listCreateParams: ListCreateParams) {
+    const response = await create(listCreateParams);
 
-      const list = response.data.list;
+    if ('error' in response) {
+      setError(response.error);
 
-      setLists([...lists, list]);
-
-      return list;
-    } catch {
-      setError(
-        new Error(
-          'Ops! Ocorreu um erro na criação da lista. Por favor, tente novamente'
-        )
-      );
+      return;
     }
+
+    return response;
   }
 
-  function pickList(listOrListId: List | number) {
+  function pickList(listOrListId: List | string) {
     typeof listOrListId === 'object'
       ? setActiveList(listOrListId)
-      : setActiveList(lists.find((list) => list.id === Number(listOrListId)));
+      : setActiveList(lists.find((list) => list.id === listOrListId));
   }
 
   return (

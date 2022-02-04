@@ -3,11 +3,17 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   OAuthCredential,
+  connectAuthEmulator,
 } from 'firebase/auth';
 
-import { app } from '.';
+import { app } from './app';
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
+
+if (process.env.NODE_ENV !== 'production') {
+  connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+}
+
 const provider = new GoogleAuthProvider();
 
 interface AuthErrorParams {

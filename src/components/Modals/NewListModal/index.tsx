@@ -24,7 +24,10 @@ export function NewListModal({ isOpen, onRequestClose }: NewListModalProps) {
   async function handleListCreate(listParams: any) {
     const list = await createList(listParams);
 
-    if (list) toast.success('Lista criada com sucesso');
+    if (!list) return;
+
+    toast.success('Lista criada com sucesso');
+    onRequestClose();
   }
 
   return (
