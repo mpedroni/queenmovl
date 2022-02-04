@@ -61,13 +61,14 @@ export function SidebarDrawer() {
         <div className="flex flex-col items-center mb-4">
           {/* TODO: use Next Image component */}
           <img
-            src={user.avatarUrl}
-            alt="User avatar"
+            src={user.photoURL || ''}
+            alt={user.displayName + ' photo'}
             className="w-1/4 mb-4 border rounded-full border-slate-900"
           />
 
-          <span className="text-lg leading-none text-heading">{user.name}</span>
-          <span className="text-sm font-bold text-body">@{user.username}</span>
+          <span className="text-lg leading-none text-heading">
+            {user.displayName}
+          </span>
         </div>
 
         <hr className="mb-4 -mx-4 border-slate-900" />

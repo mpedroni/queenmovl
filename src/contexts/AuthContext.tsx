@@ -1,12 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
-import { loginWithGoogle as login } from '../services/firebase/auth';
+import { User } from 'firebase/auth';
 
-type User = {
-  id: number;
-  username: string;
-  name: string;
-  avatarUrl: string;
-};
+import { loginWithGoogle } from '../services/firebase/auth';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -14,11 +9,7 @@ interface AuthProviderProps {
 
 export interface AuthContextData {
   user: User | null;
-  checkUsernameAvailability: (username: string) => void;
-  loginWithGoogle: () => void;
-  isUsernameAvailable: boolean;
-  isLogged: boolean;
-  register: (username: string) => boolean;
+  login: () => Promise<User | null>;
 }
 
 export const AuthContext = createContext<AuthContextData>(
@@ -27,36 +18,22 @@ export const AuthContext = createContext<AuthContextData>(
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
-  const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
 
-  function checkUsernameAvailability(username: string): void {
-    setIsUsernameAvailable(username.length > 3);
-  }
+  async function login(): Promise<User | null> {
+    const result = await loginWithGoogle();
 
-  async function loginWithGoogle(): Promise<void> {
-    const result = await login();
+    if (!result) return null;
 
-    if (!result) return;
+    setUser(result.user);
 
-    setUser(result.user as any);
-
-    setIsLogged(true);
-  }
-
-  function register(username: string): boolean {
-    return true;
+    return result.user;
   }
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        checkUsernameAvailability,
-        isUsernameAvailable,
-        isLogged,
-        loginWithGoogle,
-        register,
+        login,
       }}
     >
       {children}

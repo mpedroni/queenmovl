@@ -4,12 +4,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { useSidebarDrawer } from '../contexts/SidebarDrawerContext';
 
 export function Header() {
-  const { isLogged } = useAuth();
+  const { user } = useAuth();
   const { handleState } = useSidebarDrawer();
 
   return (
     <header className="container flex items-center gap-8 px-4 pt-8 mx-auto">
-      {isLogged && (
+      {!!user && (
         <FiMenu
           data-testid="toggle-sidebar"
           className="text-2xl cursor-pointer text-heading"

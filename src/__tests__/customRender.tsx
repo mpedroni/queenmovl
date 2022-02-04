@@ -45,11 +45,7 @@ function Wrapper({ children, providerProps }: WrapperProps) {
 
 const defaultProviderProps: CustomProviderProps = {
   authProviderProps: {
-    checkUsernameAvailability: jest.fn(),
-    isLogged: false,
-    isUsernameAvailable: false,
-    loginWithGoogle: jest.fn(),
-    register: jest.fn(),
+    login: jest.fn(),
     user: null,
   },
 
