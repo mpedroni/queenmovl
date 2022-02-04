@@ -19,10 +19,6 @@ export default function Home() {
 
   const router = useRouter();
 
-  function handleLoginWithGoogle() {
-    loginWithGoogle();
-  }
-
   function handleUsernameInput(username: string) {
     setUsername(username);
     checkUsernameAvailability(username);
@@ -49,6 +45,7 @@ export default function Home() {
           tw="bg-highlight w-full md:w-auto"
           size="xl"
           Icon={FcGoogle}
+          onClick={loginWithGoogle}
         >
           Entrar com o Google
         </BaseButton>

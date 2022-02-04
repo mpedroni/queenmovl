@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
+import { loginWithGoogle as login } from '../services/firebase/auth';
 
 type User = {
   id: number;
@@ -24,37 +25,26 @@ export const AuthContext = createContext<AuthContextData>(
   {} as AuthContextData
 );
 
-const FAKE_USER = {
-  id: 1,
-  username: 'mpedroni',
-  name: 'Matheus Pedroni',
-  avatarUrl: 'https://github.com/mpedroni.png',
-};
-
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User>(FAKE_USER);
+  const [user, setUser] = useState<User | null>(null);
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
-  const [isLogged, setIsLogged] = useState(true);
+  const [isLogged, setIsLogged] = useState(false);
 
   function checkUsernameAvailability(username: string): void {
     setIsUsernameAvailable(username.length > 3);
   }
 
-  function loginWithGoogle(): void {
-    setUser(FAKE_USER);
+  async function loginWithGoogle(): Promise<void> {
+    const result = await login();
 
-    if (FAKE_USER.username) setIsLogged(true);
+    if (!result) return;
+
+    setUser(result.user as any);
+
+    setIsLogged(true);
   }
 
   function register(username: string): boolean {
-    const user = {
-      ...FAKE_USER,
-      username,
-    };
-
-    setIsLogged(true);
-    setUser(user);
-
     return true;
   }
 
