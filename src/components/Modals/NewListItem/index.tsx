@@ -55,8 +55,8 @@ export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
     return parsedMovieOverview + '...';
   }
 
-  function handleAddMovie(movieId: number) {
-    console.log(movieId);
+  async function handleAddMovie(movie: MovieType) {
+    console.log(movie);
   }
 
   async function getMovies(query: string) {

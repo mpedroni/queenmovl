@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 import { api } from '../services/api';
 import { useAuth } from './AuthContext';
 
-type List = {
+export type List = {
   id: number;
   name: string;
 };
@@ -79,9 +79,9 @@ export function ListsProvider({ children }: ListsProviderProps) {
   }
 
   function pickList(listOrListId: List | number) {
-    typeof listOrListId === 'number'
-      ? setActiveList(lists.find((list) => list.id === listOrListId))
-      : setActiveList(listOrListId);
+    typeof listOrListId === 'object'
+      ? setActiveList(listOrListId)
+      : setActiveList(lists.find((list) => list.id === Number(listOrListId)));
   }
 
   return (

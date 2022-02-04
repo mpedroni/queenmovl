@@ -8,7 +8,7 @@ type List = {
 export interface MenuProps {
   header: string;
   lists: List[];
-  onSelectList: (listId: number) => void;
+  onSelectList: (list: List) => void;
 }
 
 export function Menu({ header, lists, onSelectList }: MenuProps) {
@@ -24,11 +24,7 @@ export function Menu({ header, lists, onSelectList }: MenuProps) {
           </li>
         )}
         {lists.map((list) => (
-          <Item
-            key={list.id}
-            list={list}
-            onClick={() => onSelectList(list.id)}
-          />
+          <Item key={list.id} list={list} onClick={() => onSelectList(list)} />
         ))}
       </ul>
     </>

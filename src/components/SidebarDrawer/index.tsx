@@ -6,7 +6,7 @@ import { FiSettings, FiX, FiPlus } from 'react-icons/fi';
 import styles from './styles.module.css';
 
 import { useAuth } from '../../contexts/AuthContext';
-import { useLists } from '../../contexts/ListsContext';
+import { List, useLists } from '../../contexts/ListsContext';
 import { useSidebarDrawer } from '../../contexts/SidebarDrawerContext';
 
 import { BaseButton } from '../Button';
@@ -28,8 +28,8 @@ export function SidebarDrawer() {
     setIsNewListModalOpen(!isNewListModalOpen);
   }
 
-  function onSelectList(listId: number) {
-    pickList(listId);
+  function onSelectList(list: List) {
+    pickList(list);
     close();
   }
 
