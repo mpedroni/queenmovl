@@ -1,7 +1,6 @@
-// TODO: temporary (i promise)
-/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
-import { FiSettings, FiX, FiPlus } from 'react-icons/fi';
+import { FiPlus } from 'react-icons/fi';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { auth } from '../../services/firebase/auth';
 
@@ -12,13 +11,13 @@ import { useSidebarDrawer } from '../../contexts/SidebarDrawerContext';
 
 import { BaseButton } from '../Button';
 import { Menu } from './Menu';
+import { Header } from './Header';
 import { NewListModal } from '../Modals/NewListModal';
-import { useAuthState } from 'react-firebase-hooks/auth';
 
 export function SidebarDrawer() {
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
   const { isOpen, close } = useSidebarDrawer();
-  const { lists, pickList } = useLists();
+  const { pickList } = useLists();
   const [user] = useAuthState(auth);
 
   function handleNewListModalState() {
@@ -45,26 +44,7 @@ export function SidebarDrawer() {
         data-testid="sidebar"
         className={`h-screen fixed top-0 left-0 bg-slate-800 shadow-md p-4 w-full md:w-1/4 ${styles['qm-sidebar-animation']}`}
       >
-        <div className="flex justify-between mb-2">
-          <FiSettings className="text-2xl transition cursor-pointer text-body hover:brightness-90" />
-          <FiX
-            className="text-2xl transition cursor-pointer text-body hover:brightness-90"
-            onClick={close}
-          />
-        </div>
-
-        <div className="flex flex-col items-center mb-4">
-          {/* TODO: use Next Image component */}
-          <img
-            src={user.photoURL || ''}
-            alt={user.displayName + ' photo'}
-            className="w-1/4 mb-4 border rounded-full border-slate-900"
-          />
-
-          <span className="text-lg leading-none text-heading">
-            {user.displayName}
-          </span>
-        </div>
+        <Header onClickCloseButton={close} user={user} />
 
         <hr className="mb-4 -mx-4 border-slate-900" />
 
@@ -76,11 +56,7 @@ export function SidebarDrawer() {
           Nova Lista
         </BaseButton>
 
-        <Menu
-          header="Minhas Listas"
-          lists={lists}
-          onSelectList={onSelectList}
-        />
+        <Menu header="Minhas Listas" user={user} onSelectList={onSelectList} />
       </nav>
       <NewListModal
         isOpen={isNewListModalOpen}

@@ -8,14 +8,13 @@ import { UserList } from '../components/UserList';
 import { useLists } from '../contexts/ListsContext';
 
 export default function Dashboard() {
-  const [user] = useAuthState(auth);
-
+  const [user, loading] = useAuthState(auth);
   const { activeList } = useLists();
-  const { replace } = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
-    if (!user) replace('/');
-  }, [user]);
+    if (!loading && !user) router.replace('/');
+  }, [loading, user]);
 
   return (
     <main className="container px-4 pt-20 mx-auto">

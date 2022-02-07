@@ -1,3 +1,9 @@
+import { User } from 'firebase/auth';
+import { ref } from 'firebase/database';
+import { useListVals } from 'react-firebase-hooks/database';
+
+import { database } from '../../../services/firebase/database';
+
 import { Item } from './Item';
 
 type List = {
@@ -7,11 +13,16 @@ type List = {
 
 export interface MenuProps {
   header: string;
-  lists: List[];
+  user: User;
   onSelectList: (list: List) => void;
 }
 
-export function Menu({ header, lists, onSelectList }: MenuProps) {
+export function Menu({ header, onSelectList, user }: MenuProps) {
+  const [lists = []] = useListVals<List>(
+    ref(database, `users/${user?.uid}/lists`),
+    { keyField: 'id' }
+  );
+
   return (
     <>
       <div className="text-body font-bold uppercase text-[0.6875rem]">
