@@ -1,23 +1,21 @@
 import { useRouter } from 'next/router';
-import { FcGoogle } from 'react-icons/fc';
-
-import { useAuth } from '../contexts/AuthContext';
-
-import { BaseButton } from '../components/Button';
 import { useEffect } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+import { auth } from '../services/firebase/auth';
+
+import { SignInWithGoogleButton } from '../components/Button/SignInWithGoogle';
 
 export default function Home() {
-  const { login, user } = useAuth();
-
-  useEffect(() => {
-    if (!!user) router.push('/dashboard');
-  }, [user]);
+  const [user] = useAuthState(auth);
 
   const router = useRouter();
 
-  async function handleLogin() {
-    await login();
-  }
+  useEffect(() => {
+    if (!!user) {
+      router.push('/dashboard');
+    }
+  }, [user]);
 
   return (
     <main className="container px-4 pt-20 mx-auto">
@@ -29,14 +27,7 @@ export default function Home() {
         crie uma lista personalizada e compartilhe com seus amigos.
       </p>
 
-      <BaseButton
-        tw="bg-highlight w-full md:w-auto"
-        size="xl"
-        Icon={FcGoogle}
-        onClick={handleLogin}
-      >
-        Entrar com o Google
-      </BaseButton>
+      <SignInWithGoogleButton />
     </main>
   );
 }

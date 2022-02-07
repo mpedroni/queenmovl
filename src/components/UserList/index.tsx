@@ -2,7 +2,7 @@ import { Controls } from './Controls';
 import { Table } from './Table';
 
 type List = {
-  id: number;
+  id: string;
   name: string;
 };
 

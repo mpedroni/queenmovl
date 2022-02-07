@@ -1,28 +1,25 @@
 // TODO: temporary (i promise)
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FiSettings, FiX, FiPlus } from 'react-icons/fi';
+
+import { auth } from '../../services/firebase/auth';
 
 import styles from './styles.module.css';
 
-import { useAuth } from '../../contexts/AuthContext';
 import { List, useLists } from '../../contexts/ListsContext';
 import { useSidebarDrawer } from '../../contexts/SidebarDrawerContext';
 
 import { BaseButton } from '../Button';
 import { Menu } from './Menu';
 import { NewListModal } from '../Modals/NewListModal';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 export function SidebarDrawer() {
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
-
-  const { lists, getLists, pickList } = useLists();
   const { isOpen, close } = useSidebarDrawer();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (!!user) getLists();
-  }, [user]);
+  const { lists, pickList } = useLists();
+  const [user] = useAuthState(auth);
 
   function handleNewListModalState() {
     setIsNewListModalOpen(!isNewListModalOpen);
