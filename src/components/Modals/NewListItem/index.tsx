@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+
 import { Modal } from '..';
+import { useLists } from '../../../contexts/ListsContext';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { Movie as MovieType, searchMovie } from '../../../services/moviedb';
 import { Input } from '../../Forms/Input';
@@ -16,6 +18,7 @@ const MOVIE_OVERVIEW_MAX_LENGTH = 380;
 export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
   const [name, setName] = useState('');
   const [movies, setMovies] = useState<MovieType[]>([]);
+  const { addListItem } = useLists();
 
   const debouncedGetMovies = useDebounce(getMovies);
 
@@ -56,7 +59,7 @@ export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
   }
 
   async function handleAddMovie(movie: MovieType) {
-    console.log(movie);
+    addListItem({ ...movie, movie_database_id: movie.id });
   }
 
   async function getMovies(query: string) {
