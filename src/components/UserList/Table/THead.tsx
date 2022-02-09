@@ -1,17 +1,19 @@
 export type Header = {
-  id: number;
-  value: string | ((item: any) => any);
+  id: string;
   text?: string;
 };
 
 interface THeadProps {
   headers: Header[];
+  hasColumnForChecked: boolean;
 }
 
-export function THead({ headers }: THeadProps) {
+export function THead({ headers, hasColumnForChecked }: THeadProps) {
   return (
     <thead>
       <tr>
+        {hasColumnForChecked && <th className="py-4 bg-highlight" />}
+
         {headers.map((header) => (
           <th
             key={header.id}

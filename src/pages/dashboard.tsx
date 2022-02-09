@@ -17,7 +17,7 @@ export default function Dashboard() {
   }, [loading, user]);
 
   return (
-    <main className="container px-4 pt-20 mx-auto">
+    <main className="container px-4 pt-20 pb-8 mx-auto">
       {!!activeList ? (
         <UserList list={activeList} />
       ) : (
