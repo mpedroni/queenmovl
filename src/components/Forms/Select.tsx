@@ -48,11 +48,7 @@ const SelectComponent: ForwardRefRenderFunction<
         ref={ref}
       >
         {options.map((option) => (
-          <option
-            key={option[itemValue]}
-            value={option[itemValue]}
-            selected={option[itemValue] === value}
-          >
+          <option key={option[itemValue]} value={option[itemValue]}>
             {option[itemText]}
           </option>
         ))}
