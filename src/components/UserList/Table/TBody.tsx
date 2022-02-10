@@ -66,14 +66,12 @@ export function TBody({
           {getItemCheckedTd(item)}
 
           {headers.map((header) => (
-            <td
-              key={`${item.id}_${header.id}`}
-              align="center"
-              className="p-2 text-body"
-            >
-              {typeof header.itemProperty === 'function'
-                ? header.itemProperty(item)
-                : item[header.itemProperty]}
+            <td key={`${item.id}_${header.id}`} align="center">
+              <div className="flex justify-center p-2 align-center text-body">
+                {typeof header.itemProperty === 'function'
+                  ? header.itemProperty(item)
+                  : item[header.itemProperty]}
+              </div>
             </td>
           ))}
         </tr>

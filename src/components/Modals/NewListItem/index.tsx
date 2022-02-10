@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
 
 import { Modal } from '..';
 import { useLists } from '../../../contexts/ListsContext';
 import { useDebounce } from '../../../hooks/useDebounce';
+import { auth } from '../../../services/firebase/auth';
 import { Movie as MovieType, searchMovie } from '../../../services/moviedb';
 import { Input } from '../../Forms/Input';
 import { Select } from '../../Forms/Select';
@@ -36,6 +38,7 @@ export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
   const [streamingPlatform, setStreamingPlatform] = useState('');
   const [movies, setMovies] = useState<MovieType[]>([]);
   const { addListItem } = useLists();
+  const [user] = useAuthState(auth);
 
   const debouncedGetMovies = useDebounce(getMovies);
 
@@ -80,6 +83,8 @@ export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
       ? new Date(Date.parse(movie.release_date)).getFullYear()
       : '';
 
+    console.log({ user }, user?.displayName);
+
     addListItem({
       ...movie,
       movie_database_id: movie.id,
@@ -87,6 +92,7 @@ export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
       release_year,
       streaming_platform: streamingPlatform,
       watched: false,
+      suggested_by: user?.displayName || '',
     });
 
     onRequestClose();
