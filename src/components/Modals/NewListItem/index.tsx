@@ -6,6 +6,7 @@ import { useLists } from '../../../contexts/ListsContext';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { Movie as MovieType, searchMovie } from '../../../services/moviedb';
 import { Input } from '../../Forms/Input';
+import { Select } from '../../Forms/Select';
 import { Movie } from './MovieList/Movie';
 
 interface NewListItemProps {
@@ -13,10 +14,26 @@ interface NewListItemProps {
   onRequestClose: () => void;
 }
 
+type Plataform = 'netflix' | 'prime_video' | 'disney_plus' | 'hbo';
+type PlatformSelectOption = {
+  text: string;
+  value: Plataform | '';
+};
+
+const platformSelectOptions: PlatformSelectOption[] = [
+  { text: '', value: '' },
+  { text: 'Netflix', value: 'netflix' },
+  { text: 'Prime Video', value: 'prime_video' },
+  { text: 'Disney Plus', value: 'disney_plus' },
+  { text: 'HBO', value: 'hbo' },
+];
+
 const MOVIE_OVERVIEW_MAX_LENGTH = 380;
 
 export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
   const [name, setName] = useState('');
+  const [genre, setGenre] = useState('');
+  const [streamingPlatform, setStreamingPlatform] = useState('');
   const [movies, setMovies] = useState<MovieType[]>([]);
   const { addListItem } = useLists();
 
@@ -59,7 +76,20 @@ export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
   }
 
   async function handleAddMovie(movie: MovieType) {
-    addListItem({ ...movie, movie_database_id: movie.id });
+    const release_year = !!movie.release_date
+      ? new Date(Date.parse(movie.release_date)).getFullYear()
+      : '';
+
+    addListItem({
+      ...movie,
+      movie_database_id: movie.id,
+      genre,
+      release_year,
+      streaming_platform: streamingPlatform,
+      watched: false,
+    });
+
+    onRequestClose();
   }
 
   async function getMovies(query: string) {
@@ -87,14 +117,35 @@ export function NewListItem({ isOpen, onRequestClose }: NewListItemProps) {
       headline="Adicionar Filme"
       onRequestClose={onRequestClose}
     >
-      <Input
-        label="Nome do filme"
-        placeholder="Ex: Orgulho e Preconceito"
-        autoComplete="off"
-        value={name}
-        onChange={(e) => handleSearch(e.target.value)}
-        tw="mb-8"
-      />
+      <div className="flex flex-wrap gap-2 mb-8 md:flex-nowrap">
+        <div className="md:basis-1/2 basis-full">
+          <Input
+            label="Nome do filme"
+            placeholder="Ex: Orgulho e Preconceito"
+            autoComplete="off"
+            value={name}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </div>
+
+        <div className="basis-1/2 md:basis-1/4">
+          <Input
+            label="Gênero"
+            placeholder="Ex: Drama"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+          />
+        </div>
+
+        <div className="flex-1 md:basis-1/4">
+          <Select
+            label="Plataforma"
+            value={streamingPlatform}
+            options={platformSelectOptions}
+            onChange={(e) => setStreamingPlatform(e.target.value)}
+          />
+        </div>
+      </div>
 
       <div className="flex flex-col gap-4">
         {movies.map((movie) => (
